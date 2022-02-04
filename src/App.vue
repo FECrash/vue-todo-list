@@ -4,6 +4,6 @@ import Todos from './components/Todos.vue';
 </script>
 
 <template>
-  <InputForm/>
-  <Todos/>
+  <InputForm />
+  <Todos />
 </template>
