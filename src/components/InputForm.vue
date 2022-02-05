@@ -1,7 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <div>
-    <label for="price" class="block text-sm font-medium text-gray-700">할일 입력</label>
+  <div class="flex items-center justify-center">
     <div class="mt-1 flex rounded-md shadow-sm">
       <input
         id="price"
