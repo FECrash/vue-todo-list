@@ -19,6 +19,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. -->
+
+<!-- FIXME: https://dev.to/imomaliev/til-2021-10-04-fix-script-setup-defineprops-is-not-defined-38ic -->
+
 <template>
   <div ref="wall" class="masonry-wall" :style="{ display: 'flex', gap: `${gap}px` }">
     <div
@@ -70,7 +73,9 @@ const columns = ref<Column[]>([]);
 const wall = ref<HTMLDivElement>() as Ref<HTMLDivElement>;
 
 const emit = defineEmits<{
+  // eslint-disable-next-line no-unused-vars
   (event: 'redraw'): void;
+  // eslint-disable-next-line no-unused-vars
   (event: 'redraw-skip'): void;
 }>();
 
