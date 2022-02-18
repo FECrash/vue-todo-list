@@ -49,13 +49,14 @@ SOFTWARE. -->
 
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch } from 'vue';
+import { TodoState } from '../../store';
 
 type Column = number[];
 
 const props = withDefaults(
   defineProps<{
     columnWidth?: number;
-    items: unknown[];
+    items: TodoState[];
     gap?: number;
     rtl?: boolean;
     ssrColumns?: number;
