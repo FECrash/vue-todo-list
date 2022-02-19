@@ -100,7 +100,7 @@ async function fillColumns(itemIndex: number) {
     return;
   }
   await nextTick();
-  const columnDivs = [...wall.value.children] as HTMLDivElement[];
+  const columnDivs = Array.from(wall.value.children) as HTMLDivElement[];
   if (rtl.value) {
     columnDivs.reverse();
   }

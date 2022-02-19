@@ -6,29 +6,20 @@ import { ref } from 'vue';
 import { TodoState } from '../store';
 
 const store = useStore();
+const height = ref<string>('48px');
 const items = ref<TodoState[]>([]);
 store.subscribe((_, state) => (items.value = [...state.todoList]));
 
+const handleResize = (event: KeyboardEvent) => {
+  // const value = (event.target as HTMLTextAreaElement).value;
+  // const j = value.match(/.{21}/gs);
+  // if (j) console.log((event.target as HTMLTextAreaElement).scrollHeight);
+  // height.value = '1px';
+  height.value = (event.target as HTMLTextAreaElement).scrollHeight + 'px';
+};
+
 const handleChange = ({ target }: Event, id: string) => {
-  const childNodes = (target as HTMLElement).childNodes;
-  const cloned = (target as HTMLElement).cloneNode(false);
-  Array.from(childNodes)
-    .map(child => {
-      if (child.nodeType === 3) {
-        const $div = document.createElement('div');
-        $div.innerText = child.textContent as string;
-        return $div;
-      }
-      if ((child as HTMLElement).innerHTML.trim() === '<br>') {
-        return document.createElement('br');
-      }
-      return child;
-    })
-    .forEach(node => cloned.appendChild(node));
-  const content = (cloned as HTMLElement).innerHTML
-    .replace(/<br>/gi, '\n')
-    .replace(/<div>.*?<\/div>/gi, (match: string) => `${match}\n`)
-    .replace(/<div>|<\/div>/gi, '');
+  const content = (target as HTMLTextAreaElement).value;
   store.dispatch('sync', { id, content });
 };
 </script>
@@ -43,13 +34,14 @@ const handleChange = ({ target }: Event, id: string) => {
           textDecoration: item.isFinish ? 'line-through' : '',
         }"
       >
-        <div
-          class="text p-3 break-all mr-6 focus:outline-none whitespace-pre"
-          contentEditable="true"
+        <textarea
+          v-model="item.content"
+          class="form-control w-full px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border-none rounded m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:border-solid focus:outline-none p-3 overflow-hidden resize-none transition ease-in-out text-base form-control block tracking-widest"
+          :style="{ height }"
+          @keydown="handleResize"
           @blur="e => handleChange(e, item.id)"
         >
-          {{ item.content }}
-        </div>
+        </textarea>
         <TodoAction :item="item" />
       </div>
     </template>
