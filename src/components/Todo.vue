@@ -7,14 +7,28 @@ import { TodoState } from '../store';
 
 const store = useStore();
 const items = ref<TodoState[]>([]);
-store.subscribe((_, state) => {
-  // console.log(state)
-  // items.value = [...state.todoList].map(todo => ({ ...todo, content: todo.content.split('\n') }));
-  items.value = [...state.todoList];
-});
+store.subscribe((_, state) => (items.value = [...state.todoList]));
 
 const handleChange = ({ target }: Event, id: string) => {
-  const content = (target as HTMLElement).innerText;
+  const childNodes = (target as HTMLElement).childNodes;
+  const cloned = (target as HTMLElement).cloneNode(false);
+  Array.from(childNodes)
+    .map(child => {
+      if (child.nodeType === 3) {
+        const $div = document.createElement('div');
+        $div.innerText = child.textContent as string;
+        return $div;
+      }
+      if ((child as HTMLElement).innerHTML.trim() === '<br>') {
+        return document.createElement('br');
+      }
+      return child;
+    })
+    .forEach(node => cloned.appendChild(node));
+  const content = (cloned as HTMLElement).innerHTML
+    .replace(/<br>/gi, '\n')
+    .replace(/<div>.*?<\/div>/gi, (match: string) => `${match}\n`)
+    .replace(/<div>|<\/div>/gi, '');
   store.dispatch('sync', { id, content });
 };
 </script>
@@ -30,15 +44,11 @@ const handleChange = ({ target }: Event, id: string) => {
         }"
       >
         <div
-          class="text p-3 break-all mr-6 focus:outline-none"
+          class="text p-3 break-all mr-6 focus:outline-none whitespace-pre"
           contentEditable="true"
           @blur="e => handleChange(e, item.id)"
         >
           {{ item.content }}
-          <!-- <template v-for="(contentText, index2) in item.content" :key="index2">
-            {{ contentText }}
-            <br v-if="item.content.length !== index2 + 1" />
-          </template> -->
         </div>
         <TodoAction :item="item" />
       </div>
