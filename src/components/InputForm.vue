@@ -20,7 +20,7 @@ const handleTodo = () => {
       <textarea
         v-model="content"
         name="todo-input"
-        class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-7 sm:text-sm border-gray-300 rounded-md mr-3"
+        class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-7 sm:text-sm border-gray-300 rounded-md mr-3 resize-none"
         :rows="rows"
         cols="33"
         @focus="handleTextarea(5)"

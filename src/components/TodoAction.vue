@@ -2,11 +2,7 @@
 import { useStore } from 'vuex';
 import { COLOR, TodoState } from '../store';
 
-interface TodoItemProp {
-  item: TodoState;
-}
-
-const props = defineProps<TodoItemProp>();
+const props = defineProps<{ item: TodoState }>();
 
 const store = useStore();
 
@@ -32,7 +28,7 @@ const deleteTodo = () => {
 };
 </script>
 <template>
-  <div class="self-end">
+  <div class="self-end flex mt-2">
     <button @click="changeColor">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path
