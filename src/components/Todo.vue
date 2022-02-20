@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import { TodoState } from '../store';
 
 const store = useStore();
+const height = ref<string>('48px');
 const items = ref<TodoState[]>([]);
 store.subscribe((_, state) => (items.value = [...state.todoList]));
 
