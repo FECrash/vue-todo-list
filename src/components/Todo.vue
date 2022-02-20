@@ -7,14 +7,17 @@ import { TodoState } from '../store';
 
 const store = useStore();
 const items = ref<TodoState[]>([]);
-store.subscribe((_, state) => {
-  // console.log(state)
-  // items.value = [...state.todoList].map(todo => ({ ...todo, content: todo.content.split('\n') }));
-  items.value = [...state.todoList];
-});
+store.subscribe((_, state) => (items.value = [...state.todoList]));
+
+const handleResize = (event: KeyboardEvent, item: TodoState) => {
+  let $textarea = (event.target as HTMLTextAreaElement);
+  $textarea.style.height = 'auto';
+  item.height = $textarea.scrollHeight === 'auto'? 'auto' : $textarea.scrollHeight + 'px';
+  $textarea.style.height = item.height;
+  };
 
 const handleChange = ({ target }: Event, id: string) => {
-  const content = (target as HTMLElement).innerText;
+  const content = (target as HTMLTextAreaElement).value;
   store.dispatch('sync', { id, content });
 };
 </script>
@@ -29,17 +32,14 @@ const handleChange = ({ target }: Event, id: string) => {
           textDecoration: item.isFinish ? 'line-through' : '',
         }"
       >
-        <div
-          class="text p-3 break-all mr-6 focus:outline-none"
-          contentEditable="true"
+        <textarea
+          v-model="item.content"
+          class="form-control w-full px-3 py-1.5 font-normal text-gray-700 bg-white bg-clip-padding border-none rounded m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:border-solid focus:outline-none p-3 overflow-hidden resize-none transition ease-in-out text-base form-control block tracking-widest"
+          :style="{height: item.height}"
+          @keyup ="e => handleResize(e, item)"
           @blur="e => handleChange(e, item.id)"
         >
-          {{ item.content }}
-          <!-- <template v-for="(contentText, index2) in item.content" :key="index2">
-            {{ contentText }}
-            <br v-if="item.content.length !== index2 + 1" />
-          </template> -->
-        </div>
+        </textarea>
         <TodoAction :item="item" />
       </div>
     </template>
