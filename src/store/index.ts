@@ -14,6 +14,7 @@ export const COLOR: Record<string, '#ffffff' | '#000000'> = {
 export interface TodoState {
   id: string;
   content: string;
+  height: string;
   noteColor: '#ffffff' | '#000000';
   color: '#ffffff' | '#000000';
   isFinish: boolean;
@@ -43,7 +44,7 @@ const store = createStore<StoreStateProps>({
   },
   mutations: {
     insert(state: StoreStateProps, content: string) {
-      state.todoList.push({ id: getId(), content, noteColor: COLOR.WHITE, color: COLOR.BLACK, isFinish: false });
+      state.todoList.push({ id: getId(), content, height: 'auto', noteColor: COLOR.WHITE, color: COLOR.BLACK, isFinish: false });
     },
     remove(state: StoreStateProps, todoId: string) {
       state.todoList = state.todoList.filter(({ id }) => id !== todoId);
